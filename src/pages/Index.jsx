@@ -16,6 +16,23 @@ const Index = () => {
   const [activeTag, setActiveTag] = useState(null);
   const [heatmapData, setHeatmapData] = useState([]);
 
+  // 从localStorage加载数据
+  useEffect(() => {
+    const savedMemos = localStorage.getItem('memos');
+    if (savedMemos) {
+      try {
+        setMemos(JSON.parse(savedMemos));
+      } catch (e) {
+        console.error('Failed to parse memos from localStorage', e);
+      }
+    }
+  }, []);
+
+  // 保存数据到localStorage
+  useEffect(() => {
+    localStorage.setItem('memos', JSON.stringify(memos));
+  }, [memos]);
+
   // 添加新memo - 支持中文标签
   const addMemo = () => {
     if (newMemo.trim() === '') return;
